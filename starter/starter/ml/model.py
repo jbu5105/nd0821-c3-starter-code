@@ -1,5 +1,5 @@
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import fbeta_score, precision_score, recall_score
-
 
 # Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
@@ -17,8 +17,10 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
-
-    pass
+    model = RandomForestClassifier(random_state=0)
+    model.fit(X_train, y_train)
+    
+    return model
 
 
 def compute_model_metrics(y, preds):
@@ -57,4 +59,20 @@ def inference(model, X):
     preds : np.array
         Predictions from the model.
     """
-    pass
+    return model.predict(X)
+
+
+def inference_slice(df, X, y, model, slice):
+    with open('./slice_output.txt', 'w') as f:
+        f.writelines(f"{slice=}\n\n")
+
+        for feature in set(df[slice]):
+            samples_bool = df[slice] == feature
+
+            preds = model.predict(X[samples_bool])
+            precision, recall, f1 = compute_model_metrics(y[samples_bool], preds)
+
+            f.writelines(f"{feature=}\n")
+            f.writelines(f"{precision=}\t")
+            f.writelines(f"{recall=}\t")
+            f.writelines(f"{f1=}\n\n")
