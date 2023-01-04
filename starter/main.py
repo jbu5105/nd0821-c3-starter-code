@@ -1,6 +1,5 @@
 """ code for your API here. """
 
-import uvicorn
 import pickle
 import pandas as pd
 from fastapi import FastAPI
