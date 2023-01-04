@@ -8,8 +8,8 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from ml.data import process_data
-from ml.model import inference, inference_slice, train_model, compute_model_metrics
+from starter.ml.data import process_data
+from starter.ml.model import inference, inference_slice, train_model, compute_model_metrics
 
 # Logger
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
@@ -26,16 +26,16 @@ def main(data_path, slice):
     cat_features = [
         "workclass",
         "education",
-        "marital-status",
+        "marital_status",
         "occupation",
         "relationship",
         "race",
         "sex",
-        "native-country",
+        "native_country",
     ]
 
     # Proces the test data with the process_data function.
-    X, y, encoder, _ = process_data(data, categorical_features=cat_features, label='salary', training=True)
+    X, y, encoder, lb = process_data(data, categorical_features=cat_features, label='salary', training=True)
     data_processed = np.zeros((X.shape[0], X.shape[-1] + 1))
     data_processed[:,:X.shape[-1]] = X
     data_processed[:,-1] = y
@@ -60,11 +60,8 @@ def main(data_path, slice):
 
     # Save model and encoder
     logger.info("Exporting model and encoder")
-    with open('./model.pkl', 'wb') as f:
-        pickle.dump(model, f)
-    with open('./encoder.pkl', 'wb') as f:
-        pickle.dump(encoder, f)
-
+    with open('./model_enc_lb.pkl', 'wb') as f:
+        pickle.dump([model, encoder, lb], f)
 
 if __name__ == '__main__':
     args = argparse.ArgumentParser()

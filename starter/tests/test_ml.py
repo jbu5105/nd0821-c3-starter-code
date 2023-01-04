@@ -4,21 +4,21 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
 from starter.ml.data import process_data
-from starter.ml.model import compute_model_metrics, inference, train_model
+from starter.ml.model import compute_model_metrics, train_model
 
 @pytest.fixture(scope='module')
 def processed_data():
-    df = pd.read_csv('./data/census.csv')
+    df = pd.read_csv('./starter/data/census.csv')
 
     cat_features = [
             "workclass",
             "education",
-            "marital-status",
+            "marital_status",
             "occupation",
             "relationship",
             "race",
             "sex",
-            "native-country",
+            "native_country",
         ]
 
     # Proces the test data with the process_data function.
